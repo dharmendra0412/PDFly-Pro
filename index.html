@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDFly Pro — Every PDF Tool You Need</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#e8002d;--red-dark:#b0001f;--red-mid:#ff2244;--red-light:#fff0f3;--red-glow:rgba(232,0,45,.15);
+  --bg:#f7f8fc;--surface:#fff;--surface2:#f3f4f6;--surface3:#e5e7eb;
+  --text:#111827;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+  --border:#e5e7eb;--border2:#d1d5db;
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;--radius-xl:24px;
+  --shadow:0 1px 8px rgba(0,0,0,.07);--shadow-md:0 4px 20px rgba(0,0,0,.10);--shadow-lg:0 8px 40px rgba(0,0,0,.14);
+  --green:#16a34a;--blue:#2563eb;--amber:#d97706;--purple:#7c3aed;--teal:#0d9488;--pink:#db2777;--indigo:#4f46e5;--cyan:#0891b2;--orange:#ea580c;
+  --transition:all .18s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+  --bg:#0f1117;--surface:#1a1d26;--surface2:#222532;--surface3:#2d3142;
+  --text:#f1f5f9;--text2:#cbd5e1;--text3:#94a3b8;--text4:#64748b;
+  --border:#2d3142;--border2:#374151;--red-light:rgba(232,0,45,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ===== NAV ===== */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999;backdrop-filter:blur(12px)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 1.5rem;height:62px;display:flex;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:800;color:var(--red);text-decoration:none;flex-shrink:0}
+.logo-box{width:34px;height:34px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo-box i{color:#fff;font-size:16px}
+.logo span{color:var(--text)}
+.nav-search{flex:1;max-width:320px;position:relative}
+.nav-search input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:7px 12px 7px 34px;font-size:13px;font-family:inherit;background:var(--surface2);color:var(--text);outline:none;transition:var(--transition)}
+.nav-search input:focus{border-color:var(--red);background:var(--surface)}
+.nav-search i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text4);font-size:13px}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-links a{padding:6px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--text3);text-decoration:none;transition:var(--transition);white-space:nowrap}
+.nav-links a:hover{background:var(--surface2);color:var(--text)}
+.nav-dropdown{position:relative}
+.nav-dropdown>a::after{content:'▾';font-size:10px;margin-left:4px;opacity:.6}
+.dropdown-menu{display:none;position:absolute;top:calc(100%+8px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);min-width:180px;padding:6px;z-index:9999}
+.nav-dropdown:hover .dropdown-menu{display:block}
+.dropdown-menu a{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);font-size:13px;color:var(--text2);text-decoration:none;transition:var(--transition)}
+.dropdown-menu a:hover{background:var(--red-light);color:var(--red)}
+.dropdown-menu a i{width:18px;font-size:13px;color:var(--text4)}
+.dropdown-divider{height:1px;background:var(--border);margin:4px 0}
+.btn-nav{background:var(--red);color:#fff !important;border-radius:var(--radius-sm);padding:7px 16px !important;font-weight:600 !important}
+.btn-nav:hover{background:var(--red-dark) !important;color:#fff !important}
+.btn-nav-outline{border:1.5px solid var(--border2) !important;background:transparent !important}
+.btn-nav-outline:hover{border-color:var(--red) !important;color:var(--red) !important;background:var(--red-light) !important}
+#theme-btn{background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;color:var(--text3);font-size:14px;transition:var(--transition)}
+#theme-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ===== HERO ===== */
+.hero{background:var(--surface);padding:64px 1.5rem 52px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(232,0,45,.07),transparent);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:18px;border:1px solid rgba(232,0,45,.2)}
+.hero h1{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:800;line-height:1.12;color:var(--text);margin-bottom:16px;letter-spacing:-.02em}
+.hero h1 span{color:var(--red)}
+.hero p{font-size:18px;color:var(--text3);max-width:580px;margin:0 auto 36px;line-height:1.65}
+.hero-search-bar{display:flex;gap:0;max-width:480px;margin:0 auto 28px;border-radius:14px;overflow:hidden;box-shadow:var(--shadow-lg);border:1.5px solid var(--border)}
+.hero-search-bar input{flex:1;border:none;padding:15px 20px;font-size:15px;font-family:inherit;outline:none;background:var(--surface);color:var(--text)}
+.hero-search-bar button{background:var(--red);color:#fff;border:none;padding:15px 22px;cursor:pointer;font-size:14px;font-weight:700;font-family:inherit;transition:var(--transition);display:flex;align-items:center;gap:6px}
+.hero-search-bar button:hover{background:var(--red-dark)}
+.hero-stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-size:22px;font-weight:800;color:var(--text)}
+.hero-stat-label{font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* ===== FILTER TABS ===== */
+.filter-section{padding:28px 1.5rem 0;max-width:1280px;margin:0 auto}
+.tab-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.tab-btn{border:1.5px solid var(--border);border-radius:100px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;background:var(--surface);color:var(--text3);transition:var(--transition);font-family:inherit;display:flex;align-items:center;gap:6px}
+.tab-btn i{font-size:12px}
+.tab-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+.tab-btn.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 12px var(--red-glow)}
+
+/* ===== TOOLS GRID ===== */
+.tools-section{padding:8px 1.5rem 48px;max-width:1280px;margin:0 auto}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.tool-card{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);padding:22px 14px 18px;text-align:center;cursor:pointer;transition:var(--transition);position:relative;overflow:hidden;user-select:none}
+.tool-card::after{content:'';position:absolute;inset:0;border-radius:var(--radius);box-shadow:inset 0 0 0 0 var(--red);transition:box-shadow .2s}
+.tool-card:hover{border-color:var(--red);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.tool-card:hover::after{box-shadow:inset 0 -3px 0 0 var(--red)}
+.tool-card.selected{border-color:var(--red);background:var(--red-light);box-shadow:0 0 0 3px rgba(232,0,45,.12)}
+.tool-icon{width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:21px;transition:var(--transition)}
+.tool-card:hover .tool-icon{transform:scale(1.08)}
+.tool-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3}
+.tool-desc{font-size:11px;color:var(--text4);line-height:1.4}
+.tool-badge{position:absolute;top:9px;right:9px;font-size:9px;font-weight:800;padding:2px 7px;border-radius:100px;letter-spacing:.04em}
+.badge-hot{background:var(--red);color:#fff}
+.badge-new{background:var(--green);color:#fff}
+.badge-ai{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff}
+.badge-pro{background:var(--amber);color:#fff}
+
+/* ===== WORKSPACE ===== */
+.workspace-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(4px);animation:fadeIn .2s}
+.workspace-overlay.open{display:block}
+.workspace-panel{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:var(--radius-xl) var(--radius-xl) 0 0;max-height:90vh;overflow-y:auto;z-index:1001;animation:slideUp .3s cubic-bezier(.4,0,.2,1);padding:0 0 2rem}
+.ws-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 0}
+.ws-header{display:flex;align-items:center;gap:14px;padding:20px 28px 16px;border-bottom:1px solid var(--border)}
+.ws-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ws-info{flex:1}
+.ws-title{font-size:19px;font-weight:800;color:var(--text)}
+.ws-sub{font-size:13px;color:var(--text3);margin-top:2px}
+.ws-close{background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:7px 10px;cursor:pointer;color:var(--text3);font-size:15px;transition:var(--transition)}
+.ws-close:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+.ws-body{padding:24px 28px 0}
+
+/* ===== DROPZONE ===== */
+.dropzone{border:2px dashed var(--border2);border-radius:14px;padding:48px 24px;text-align:center;cursor:pointer;transition:var(--transition);background:var(--surface2)}
+.dropzone:hover,.dropzone.dragover{border-color:var(--red);background:var(--red-light)}
+.dropzone .dz-icon{font-size:44px;color:var(--text4);display:block;margin-bottom:14px;transition:var(--transition)}
+.dropzone:hover .dz-icon,.dropzone.dragover .dz-icon{color:var(--red);transform:scale(1.05)}
+.dropzone h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.dropzone p{font-size:13px;color:var(--text4)}
+.dropzone .browse{color:var(--red);font-weight:700}
+.dropzone .file-types{display:inline-flex;gap:6px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.dropzone .ft{background:var(--surface3);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text3)}
+#file-input{display:none}
+
+/* ===== FILE LIST ===== */
+.file-list-wrap{margin-top:16px}
+.file-list{display:flex;flex-direction:column;gap:8px}
+.file-item{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:11px 14px;transition:var(--transition)}
+.file-item:hover{border-color:var(--border2)}
+.file-thumb{width:34px;height:42px;background:var(--red-light);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.file-thumb i{color:var(--red);font-size:17px}
+.file-info{flex:1;min-width:0}
+.file-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-meta{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-top:2px}
+.file-size,.file-upload-status{font-size:11px;color:var(--text4)}
+.file-upload-pct{font-size:11px;font-weight:700;color:var(--red);min-width:36px;text-align:right}
+.file-progress{height:4px;background:var(--border);border-radius:100px;margin-top:7px;overflow:hidden}
+.file-progress-inner{height:100%;background:var(--red);border-radius:100px;width:0%;transition:width .3s}
+.file-actions{display:flex;gap:4px}
+.file-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 7px;cursor:pointer;color:var(--text4);font-size:12px;transition:var(--transition)}
+.file-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+/* ===== OPTIONS ===== */
+.opts{margin-top:20px}
+.opts-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.opts-title i{color:var(--text4);font-size:12px}
+.opts-grid{display:flex;gap:14px;flex-wrap:wrap}
+.opt-group{display:flex;flex-direction:column;gap:6px;min-width:0}
+.opt-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.opt-select{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);cursor:pointer;outline:none;transition:var(--transition)}
+.opt-select:focus{border-color:var(--red)}
+.opt-input{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;transition:var(--transition);width:200px}
+.opt-input:focus{border-color:var(--red)}
+.toggle-group{display:flex;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.tog-btn{border:none;background:var(--surface);padding:8px 14px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--text3);transition:var(--transition)}
+.tog-btn+.tog-btn{border-left:1px solid var(--border)}
+.tog-btn.on{background:var(--red);color:#fff}
+.tog-btn:hover:not(.on){background:var(--surface2);color:var(--text)}
+.range-row{display:flex;align-items:center;gap:10px}
+input[type=range]{accent-color:var(--red);width:140px;cursor:pointer}
+.range-val{font-size:13px;font-weight:700;color:var(--red);min-width:38px}
+.color-opts{display:flex;gap:8px;flex-wrap:wrap}
+.color-dot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:var(--transition)}
+.color-dot.sel,.color-dot:hover{transform:scale(1.15);border-color:var(--text)}
+.checkbox-row{display:flex;align-items:center;gap:8px;cursor:pointer}
+.checkbox-row input{accent-color:var(--red);width:15px;height:15px;cursor:pointer}
+.checkbox-row span{font-size:13px;font-weight:500;color:var(--text2)}
+
+/* ===== AI SECTION ===== */
+.ai-badge-wrap{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(37,99,235,.12));border:1px solid rgba(124,58,237,.25);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:14px}
+.ai-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:14px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;resize:vertical;min-height:80px;transition:var(--transition)}
+.ai-textarea:focus{border-color:#7c3aed}
+.ai-result{background:linear-gradient(135deg,rgba(124,58,237,.05),rgba(37,99,235,.05));border:1px solid rgba(124,58,237,.2);border-radius:var(--radius-sm);padding:14px;margin-top:12px;font-size:14px;color:var(--text2);line-height:1.7;display:none;white-space:pre-wrap}
+.ai-result.show{display:block}
+
+/* ===== ACTION BTN ===== */
+.ws-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;align-items:center}
+.btn-action{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(232,0,45,.28)}
+.btn-action:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,0,45,.35)}
+.btn-action:disabled{background:var(--text4);box-shadow:none;cursor:not-allowed;transform:none}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:12px 20px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:var(--transition)}
+.btn-secondary:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+/* ===== PROGRESS ===== */
+.prog-wrap{margin-top:20px;display:none}
+.prog-wrap.show{display:block}
+.prog-track{background:var(--surface2);border-radius:100px;height:8px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--red-mid),var(--red));border-radius:100px;width:0%;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.prog-label{font-size:13px;color:var(--text3);margin-top:8px;display:flex;justify-content:space-between}
+
+/* ===== RESULT BOX ===== */
+.result-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px;margin-top:20px;text-align:center;display:none}
+.result-box.show{display:block}
+.result-icon{font-size:44px;margin-bottom:12px}
+.result-title{font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px}
+.result-desc{font-size:13px;color:var(--text3);margin-bottom:18px;line-height:1.5}
+.result-stats{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:18px}
+.rstat{text-align:center}
+.rstat-num{font-size:20px;font-weight:800;color:var(--red)}
+.rstat-label{font-size:11px;color:var(--text4);text-transform:uppercase;letter-spacing:.06em}
+.result-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-dl{display:inline-flex;align-items:center;gap:7px;background:var(--text);color:var(--surface);border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:var(--transition)}
+.btn-dl:hover{opacity:.85}
+.btn-again{background:var(--red);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:var(--transition)}
+.btn-again:hover{background:var(--red-dark)}
+
+/* ===== SIGN CANVAS ===== */
+#sign-canvas{border:1.5px solid var(--border);border-radius:var(--radius-sm);cursor:crosshair;background:#fff;touch-action:none}
+.sign-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+
+/* ===== METADATA TABLE ===== */
+.meta-table{width:100%;border-collapse:collapse}
+.meta-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:13px}
+.meta-table td:first-child{font-weight:600;color:var(--text3);width:35%}
+.meta-table input{width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);outline:none}
+.meta-table input:focus{border-color:var(--red)}
+
+/* ===== COMPARE ===== */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.compare-pane{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.compare-pane-header{background:var(--surface2);padding:8px 12px;font-size:12px;font-weight:700;color:var(--text3)}
+.diff-line{padding:4px 10px;font-size:12px;font-family:monospace}
+.diff-add{background:#dcfce7;color:#166534}
+.diff-remove{background:#fee2e2;color:#991b1b}
+.diff-same{color:var(--text3)}
+[data-theme="dark"] .diff-add{background:#14532d33;color:#86efac}
+[data-theme="dark"] .diff-remove{background:#7f1d1d33;color:#fca5a5}
+
+/* ===== PAGE NUMBERS ===== */
+.pagenum-preview{background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin-top:12px;display:flex;justify-content:center}
+.pdf-page-mock{width:120px;height:160px;background:#fff;border:1px solid var(--border2);border-radius:4px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.pdf-page-mock .lines{display:flex;flex-direction:column;gap:5px}
+.pdf-page-mock .line{height:4px;background:var(--border2);border-radius:2px}
+.pdf-page-mock .line:nth-child(1){width:80px}
+.pdf-page-mock .line:nth-child(2){width:70px}
+.pdf-page-mock .line:nth-child(3){width:75px}
+.pdf-page-mock .line:nth-child(4){width:60px}
+.pagenum-label{position:absolute;font-size:10px;font-weight:700;color:var(--red);background:rgba(232,0,45,.1);padding:2px 6px;border-radius:4px}
+.pagenum-label.bottom-center{bottom:6px;left:50%;transform:translateX(-50%)}
+.pagenum-label.bottom-right{bottom:6px;right:6px}
+.pagenum-label.bottom-left{bottom:6px;left:6px}
+.pagenum-label.top-center{top:6px;left:50%;transform:translateX(-50%)}
+.pagenum-label.top-right{top:6px;right:6px}
+.pagenum-label.top-left{top:6px;left:6px}
+
+/* ===== PASSWORD STRENGTH ===== */
+.pwd-strength{margin-top:8px}
+.pwd-bars{display:flex;gap:4px;margin-bottom:4px}
+.pwd-bar{height:4px;flex:1;border-radius:100px;background:var(--border);transition:var(--transition)}
+.pwd-bar.filled-1{background:#ef4444}
+.pwd-bar.filled-2{background:#f97316}
+.pwd-bar.filled-3{background:#eab308}
+.pwd-bar.filled-4{background:#22c55e}
+.pwd-label{font-size:11px;color:var(--text4)}
+
+/* ===== RECENT FILES ===== */
+.recent-section{padding:0 1.5rem 40px;max-width:1280px;margin:0 auto}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-hdr h2{font-size:18px;font-weight:700;color:var(--text)}
+.section-hdr a{font-size:13px;color:var(--red);text-decoration:none;font-weight:600}
+.recent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.recent-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:var(--transition)}
+.recent-card:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:var(--shadow)}
+.recent-icon{width:36px;height:44px;background:var(--red-light);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.recent-icon i{color:var(--red);font-size:18px}
+.recent-info{min-width:0;flex:1}
+.recent-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-meta{font-size:11px;color:var(--text4);margin-top:2px}
+
+/* ===== FEATURES BANNER ===== */
+.features-banner{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 1.5rem;margin:0}
+.features-inner{max-width:1280px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:28px}
+.feat-card{display:flex;align-items:flex-start;gap:14px}
+.feat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.feat-text h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.feat-text p{font-size:12px;color:var(--text3);line-height:1.5}
+
+/* ===== STATS BAR ===== */
+.stats-bar{background:linear-gradient(135deg,#e8002d 0%,#b0001f 100%);padding:28px 1.5rem}
+.stats-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:28px;font-weight:800;color:#fff}
+.stat-label{font-size:11px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* ===== FOOTER ===== */
+footer{background:var(--text);color:rgba(255,255,255,.6);padding:48px 1.5rem 24px}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.footer-brand .logo{color:#fff;margin-bottom:12px;display:inline-flex}
+.footer-brand p{font-size:13px;line-height:1.6;max-width:260px}
+.footer-col h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:14px}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;margin-bottom:8px;transition:var(--transition)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:gap:12px}
+.footer-socials{display:flex;gap:10px}
+.social-btn{width:34px;height:34px;background:rgba(255,255,255,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:14px;text-decoration:none;transition:var(--transition)}
+.social-btn:hover{background:var(--red);color:#fff}
+.footer-copy{font-size:12px}
+.trust-badges{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.trust-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px}
+.trust-badge i{color:rgba(255,255,255,.4)}
+
+/* ===== TOAST ===== */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--text);color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-lg);animation:slideInRight .3s;min-width:220px}
+.toast.success{background:#16a34a}
+.toast.error{background:var(--red)}
+.toast.info{background:#2563eb}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes slideInRight{from{transform:translateX(50px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .footer-top{grid-template-columns:1fr 1fr;gap:20px}
+  .nav-links .hide-mob{display:none}
+}
+@media(max-width:600px){
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:1.9rem}
+  .hero-stats{gap:20px}
+  .compare-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .ws-body{padding:16px 16px 0}
+  .ws-header{padding:14px 16px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <div class="logo-box"><i class="fa-solid fa-file-pdf"></i></div>
+      PDFly<span style="color:var(--red)">Pro</span>
+    </a>
+
+    <div class="nav-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search tools…" id="global-search" oninput="globalSearch(this.value)">
+    </div>
+
+    <div class="nav-links">
+      <div class="nav-dropdown hide-mob">
+        <a href="#">Organize</a>
+        <div class="dropdown-menu">
+          <a href="#" onclick="openToolById('merge')"><i class="fa-solid fa-object-group"></i>Merge PDF</a>
+          <a href="#" onclick="openToolById('split')"><i class="fa-solid fa-scissors"></i>Split PDF</a>
+          <a href="#" onclick="openToolById('remove-pages')"><i class="fa-solid fa-minus-square"></i>Remove Pages</a>
+          <a href="#" onclick="openToolById('extract')"><i class="fa-solid fa-file-export"></i>Extract Pages</a>
+          <a href="#" onclick="openToolById('rotate')"><i class="fa-solid fa-rotate-right"></i>Rotate PDF</a>
+          <a href="#" onclick="openToolById('reorder')"><i class="fa-solid fa-list-ol"></i>Organize PDF</a>
+        </div>
+      </div>
+      <div class="nav-dropdown hide-mob">
+        <a href="#">Convert</a>
+        <div class="dropdown-menu">
+          <a href="#" onclick="openToolById('jpg2pdf')"><i class="fa-regular fa-image"></i>JPG to PDF</a>
+          <a href="#" onclick="openToolById('word2pdf')"><i class="fa-solid fa-file-word"></i>Word to PDF</a>
+          <a href="#" onclick="openToolById('excel2pdf')"><i class="fa-solid fa-file-excel"></i>Excel to PDF</a>
+          <a href="#" onclick="openToolById('ppt2pdf')"><i class="fa-solid fa-file-powerpoint"></i>PPT to PDF</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" onclick="openToolById('pdf2jpg')"><i class="fa-solid fa-image"></i>PDF to JPG</a>
+          <a href="#" onclick="openToolById('pdf2word')"><i class="fa-regular fa-file-word"></i>PDF to Word</a>
+          <a href="#" onclick="openToolById('pdf2excel')"><i class="fa-regular fa-file-excel"></i>PDF to Excel</a>
+          <a href="#" onclick="openToolById('pdf2ppt')"><i class="fa-regular fa-file-powerpoint"></i>PDF to PPT</a>
+        </div>
+      </div>
+      <div class="nav-dropdown hide-mob">
+        <a href="#">Edit</a>
+        <div class="dropdown-menu">
+          <a href="#" onclick="openToolById('watermark')"><i class="fa-solid fa-stamp"></i>Add Watermark</a>
+          <a href="#" onclick="openToolById('pagenumbers')"><i class="fa-solid fa-hashtag"></i>Page Numbers</a>
+          <a href="#" onclick="openToolById('crop')"><i class="fa-solid fa-crop-alt"></i>Crop PDF</a>
+          <a href="#" onclick="openToolById('edit')"><i class="fa-solid fa-pen"></i>Edit PDF</a>
+          <a href="#" onclick="openToolById('forms')"><i class="fa-solid fa-wpforms"></i>PDF Forms</a>
+          <a href="#" onclick="openToolById('metadata')"><i class="fa-solid fa-tags"></i>Edit Metadata</a>
+        </div>
+      </div>
+      <a href="#" class="btn-nav-outline hide-mob">Log in</a>
+      <a href="#" class="btn-nav">Sign up free</a>
+      <button id="theme-btn" onclick="toggleTheme()" title="Toggle dark mode"><i class="fa-solid fa-moon" id="theme-icon"></i></button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><i class="fa-solid fa-bolt"></i> 100% Free · No Registration Required</div>
+  <h1>Every PDF tool you need,<br><span>all in one place.</span></h1>
+  <p>Merge, split, compress, convert, rotate, sign, watermark, and much more — all with best-in-class quality and security.</p>
+  <div class="hero-search-bar">
+    <input type="text" placeholder="What do you need to do with your PDF?" id="hero-search" oninput="globalSearch(this.value)">
+    <button><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">40+</div><div class="hero-stat-label">PDF Tools</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">850M+</div><div class="hero-stat-label">Files Processed</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">100%</div><div class="hero-stat-label">Free Forever</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">256-bit</div><div class="hero-stat-label">Encryption</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">4.9★</div><div class="hero-stat-label">User Rating</div></div>
+  </div>
+</div>
+
+<!-- FILTER TABS -->
+<div class="filter-section" id="main-content">
+  <div class="tab-row" id="tab-row">
+    <button class="tab-btn active" onclick="filterCat(this,'all')"><i class="fa-solid fa-border-all"></i>All Tools</button>
+    <button class="tab-btn" onclick="filterCat(this,'organize')"><i class="fa-solid fa-layer-group"></i>Organize</button>
+    <button class="tab-btn" onclick="filterCat(this,'optimize')"><i class="fa-solid fa-gauge-high"></i>Optimize</button>
+    <button class="tab-btn" onclick="filterCat(this,'convert')"><i class="fa-solid fa-arrows-rotate"></i>Convert</button>
+    <button class="tab-btn" onclick="filterCat(this,'edit')"><i class="fa-solid fa-pen-nib"></i>Edit</button>
+    <button class="tab-btn" onclick="filterCat(this,'security')"><i class="fa-solid fa-shield-halved"></i>Security</button>
+    <button class="tab-btn" onclick="filterCat(this,'ai')"><i class="fa-solid fa-robot"></i>AI Tools</button>
+    <button class="tab-btn" onclick="filterCat(this,'bonus')"><i class="fa-solid fa-star"></i>Bonus Tools</button>
+  </div>
+</div>
+
+<!-- TOOLS GRID -->
+<div class="tools-section">
+  <div class="tools-grid" id="tools-grid">
+
+    <!-- ORGANIZE -->
+    <div class="tool-card" data-cat="organize" data-id="merge" onclick="openTool('merge')">
+      <span class="tool-badge badge-hot">Popular</span>
+      <div class="tool-icon" style="background:#fff0f3"><i class="fa-solid fa-object-group" style="color:#e8002d"></i></div>
+      <div class="tool-name">Merge PDF</div>
+      <div class="tool-desc">Combine multiple PDFs into one file</div>
+    </div>
+    <div class="tool-card" data-cat="organize" data-id="split" onclick="openTool('split')">
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-solid fa-scissors" style="color:#f97316"></i></div>
+      <div class="tool-name">Split PDF</div>
+      <div class="tool-desc">Separate pages into individual PDFs</div>
+    </div>
+    <div class="tool-card" data-cat="organize" data-id="remove-pages" onclick="openTool('remove-pages')">
+      <div class="tool-icon" style="background:#fef2f2"><i class="fa-solid fa-trash-can" style="color:#ef4444"></i></div>
+      <div class="tool-name">Remove Pages</div>
+      <div class="tool-desc">Delete specific pages from a PDF</div>
+    </div>
+    <div class="tool-card" data-cat="organize" data-id="extract" onclick="openTool('extract')">
+      <div class="tool-icon" style="background:#f0f9ff"><i class="fa-solid fa-file-export" style="color:#0ea5e9"></i></div>
+      <div class="tool-name">Extract Pages</div>
+      <div class="tool-desc">Extract selected pages as a new PDF</div>
+    </div>
+    <div class="tool-card" data-cat="organize" data-id="reorder" onclick="openTool('reorder')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-list-ol" style="color:#22c55e"></i></div>
+      <div class="tool-name">Organize PDF</div>
+      <div class="tool-desc">Reorder and manage PDF pages</div>
+    </div>
+    <div class="tool-card" data-cat="organize" data-id="rotate" onclick="openTool('rotate')">
+      <div class="tool-icon" style="background:#fdf4ff"><i class="fa-solid fa-rotate-right" style="color:#a855f7"></i></div>
+      <div class="tool-name">Rotate PDF</div>
+      <div class="tool-desc">Rotate pages left, right or 180°</div>
+    </div>
+
+    <!-- OPTIMIZE -->
+    <div class="tool-card" data-cat="optimize" data-id="compress" onclick="openTool('compress')">
+      <span class="tool-badge badge-hot">Hot</span>
+      <div class="tool-icon" style="background:#faf5ff"><i class="fa-solid fa-compress" style="color:#7c3aed"></i></div>
+      <div class="tool-name">Compress PDF</div>
+      <div class="tool-desc">Reduce file size, keep quality</div>
+    </div>
+    <div class="tool-card" data-cat="optimize" data-id="repair" onclick="openTool('repair')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-wrench" style="color:#16a34a"></i></div>
+      <div class="tool-name">Repair PDF</div>
+      <div class="tool-desc">Fix damaged or corrupted PDFs</div>
+    </div>
+    <div class="tool-card" data-cat="optimize" data-id="ocr" onclick="openTool('ocr')">
+      <span class="tool-badge badge-new">New</span>
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-solid fa-text-height" style="color:#f97316"></i></div>
+      <div class="tool-name">OCR PDF</div>
+      <div class="tool-desc">Make scanned PDFs searchable</div>
+    </div>
+
+    <!-- CONVERT TO PDF -->
+    <div class="tool-card" data-cat="convert" data-id="jpg2pdf" onclick="openTool('jpg2pdf')">
+      <div class="tool-icon" style="background:#fffbeb"><i class="fa-solid fa-image" style="color:#d97706"></i></div>
+      <div class="tool-name">JPG to PDF</div>
+      <div class="tool-desc">Convert images to PDF easily</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="word2pdf" onclick="openTool('word2pdf')">
+      <div class="tool-icon" style="background:#eff6ff"><i class="fa-solid fa-file-word" style="color:#2563eb"></i></div>
+      <div class="tool-name">Word to PDF</div>
+      <div class="tool-desc">Convert DOCX/DOC files to PDF</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="excel2pdf" onclick="openTool('excel2pdf')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-file-excel" style="color:#16a34a"></i></div>
+      <div class="tool-name">Excel to PDF</div>
+      <div class="tool-desc">Convert spreadsheets to PDF</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="ppt2pdf" onclick="openTool('ppt2pdf')">
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-solid fa-file-powerpoint" style="color:#f97316"></i></div>
+      <div class="tool-name">PowerPoint to PDF</div>
+      <div class="tool-desc">Convert presentations to PDF</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="html2pdf" onclick="openTool('html2pdf')">
+      <div class="tool-icon" style="background:#faf5ff"><i class="fa-brands fa-html5" style="color:#a855f7"></i></div>
+      <div class="tool-name">HTML to PDF</div>
+      <div class="tool-desc">Convert web pages to PDF</div>
+    </div>
+    <!-- CONVERT FROM PDF -->
+    <div class="tool-card" data-cat="convert" data-id="pdf2jpg" onclick="openTool('pdf2jpg')">
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-solid fa-file-image" style="color:#f97316"></i></div>
+      <div class="tool-name">PDF to JPG</div>
+      <div class="tool-desc">Extract pages as JPEG images</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="pdf2word" onclick="openTool('pdf2word')">
+      <span class="tool-badge badge-hot">Popular</span>
+      <div class="tool-icon" style="background:#eff6ff"><i class="fa-regular fa-file-word" style="color:#4f46e5"></i></div>
+      <div class="tool-name">PDF to Word</div>
+      <div class="tool-desc">Export editable DOCX documents</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="pdf2excel" onclick="openTool('pdf2excel')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-regular fa-file-excel" style="color:#16a34a"></i></div>
+      <div class="tool-name">PDF to Excel</div>
+      <div class="tool-desc">Pull data into spreadsheets</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="pdf2ppt" onclick="openTool('pdf2ppt')">
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-regular fa-file-powerpoint" style="color:#ea580c"></i></div>
+      <div class="tool-name">PDF to PowerPoint</div>
+      <div class="tool-desc">Turn PDF into PPT slides</div>
+    </div>
+    <div class="tool-card" data-cat="convert" data-id="pdf2pdfa" onclick="openTool('pdf2pdfa')">
+      <div class="tool-icon" style="background:#f0f9ff"><i class="fa-solid fa-archive" style="color:#0891b2"></i></div>
+      <div class="tool-name">PDF to PDF/A</div>
+      <div class="tool-desc">ISO archiving standard format</div>
+    </div>
+
+    <!-- EDIT -->
+    <div class="tool-card" data-cat="edit" data-id="watermark" onclick="openTool('watermark')">
+      <div class="tool-icon" style="background:#fdf4ff"><i class="fa-solid fa-stamp" style="color:#c026d3"></i></div>
+      <div class="tool-name">Add Watermark</div>
+      <div class="tool-desc">Stamp text or image on PDFs</div>
+    </div>
+    <div class="tool-card" data-cat="edit" data-id="pagenumbers" onclick="openTool('pagenumbers')">
+      <div class="tool-icon" style="background:#f0f9ff"><i class="fa-solid fa-hashtag" style="color:#0891b2"></i></div>
+      <div class="tool-name">Page Numbers</div>
+      <div class="tool-desc">Add numbered pages to PDFs</div>
+    </div>
+    <div class="tool-card" data-cat="edit" data-id="crop" onclick="openTool('crop')">
+      <div class="tool-icon" style="background:#fffbeb"><i class="fa-solid fa-crop-alt" style="color:#d97706"></i></div>
+      <div class="tool-name">Crop PDF</div>
+      <div class="tool-desc">Crop margins or specific areas</div>
+    </div>
+    <div class="tool-card" data-cat="edit" data-id="edit" onclick="openTool('edit')">
+      <div class="tool-icon" style="background:#fff0f3"><i class="fa-solid fa-pen" style="color:#e8002d"></i></div>
+      <div class="tool-name">Edit PDF</div>
+      <div class="tool-desc">Add text, shapes and annotations</div>
+    </div>
+    <div class="tool-card" data-cat="edit" data-id="forms" onclick="openTool('forms')">
+      <span class="tool-badge badge-new">New</span>
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-wpforms" style="color:#16a34a"></i></div>
+      <div class="tool-name">PDF Forms</div>
+      <div class="tool-desc">Create and fill interactive forms</div>
+    </div>
+    <div class="tool-card" data-cat="edit" data-id="metadata" onclick="openTool('metadata')">
+      <div class="tool-icon" style="background:#faf5ff"><i class="fa-solid fa-tags" style="color:#7c3aed"></i></div>
+      <div class="tool-name">Edit Metadata</div>
+      <div class="tool-desc">Change title, author, keywords</div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="tool-card" data-cat="security" data-id="protect" onclick="openTool('protect')">
+      <div class="tool-icon" style="background:#fef2f2"><i class="fa-solid fa-lock" style="color:#ef4444"></i></div>
+      <div class="tool-name">Protect PDF</div>
+      <div class="tool-desc">Encrypt with a password</div>
+    </div>
+    <div class="tool-card" data-cat="security" data-id="unlock" onclick="openTool('unlock')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-lock-open" style="color:#22c55e"></i></div>
+      <div class="tool-name">Unlock PDF</div>
+      <div class="tool-desc">Remove PDF password protection</div>
+    </div>
+    <div class="tool-card" data-cat="security" data-id="sign" onclick="openTool('sign')">
+      <div class="tool-icon" style="background:#fff0f3"><i class="fa-solid fa-signature" style="color:#e8002d"></i></div>
+      <div class="tool-name">Sign PDF</div>
+      <div class="tool-desc">Draw or upload your signature</div>
+    </div>
+    <div class="tool-card" data-cat="security" data-id="redact" onclick="openTool('redact')">
+      <div class="tool-icon" style="background:#fef2f2"><i class="fa-solid fa-eraser" style="color:#dc2626"></i></div>
+      <div class="tool-name">Redact PDF</div>
+      <div class="tool-desc">Permanently remove sensitive data</div>
+    </div>
+    <div class="tool-card" data-cat="security" data-id="compare" onclick="openTool('compare')">
+      <div class="tool-icon" style="background:#f0f9ff"><i class="fa-solid fa-code-compare" style="color:#0ea5e9"></i></div>
+      <div class="tool-name">Compare PDF</div>
+      <div class="tool-desc">Spot differences between files</div>
+    </div>
+
+    <!-- AI TOOLS -->
+    <div class="tool-card" data-cat="ai" data-id="ai-summarize" onclick="openTool('ai-summarize')">
+      <span class="tool-badge badge-ai">AI</span>
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(37,99,235,.15))"><i class="fa-solid fa-sparkles" style="color:#7c3aed"></i></div>
+      <div class="tool-name">AI Summarizer</div>
+      <div class="tool-desc">Summarize any PDF with AI</div>
+    </div>
+    <div class="tool-card" data-cat="ai" data-id="ai-translate" onclick="openTool('ai-translate')">
+      <span class="tool-badge badge-ai">AI</span>
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(5,150,105,.15),rgba(37,99,235,.15))"><i class="fa-solid fa-language" style="color:#059669"></i></div>
+      <div class="tool-name">Translate PDF</div>
+      <div class="tool-desc">AI-powered PDF translation</div>
+    </div>
+    <div class="tool-card" data-cat="ai" data-id="ai-chat" onclick="openTool('ai-chat')">
+      <span class="tool-badge badge-ai">AI</span>
+      <div class="tool-icon" style="background:linear-gradient(135deg,rgba(232,0,45,.12),rgba(124,58,237,.12))"><i class="fa-solid fa-comments" style="color:#e8002d"></i></div>
+      <div class="tool-name">Chat with PDF</div>
+      <div class="tool-desc">Ask questions about your PDF</div>
+    </div>
+
+    <!-- BONUS TOOLS -->
+    <div class="tool-card" data-cat="bonus" data-id="scan2pdf" onclick="openTool('scan2pdf')">
+      <div class="tool-icon" style="background:#f0fdf4"><i class="fa-solid fa-camera" style="color:#16a34a"></i></div>
+      <div class="tool-name">Scan to PDF</div>
+      <div class="tool-desc">Capture documents via camera</div>
+    </div>
+    <div class="tool-card" data-cat="bonus" data-id="pdf-viewer" onclick="openTool('pdf-viewer')">
+      <div class="tool-icon" style="background:#f0f9ff"><i class="fa-solid fa-eye" style="color:#0891b2"></i></div>
+      <div class="tool-name">PDF Viewer</div>
+      <div class="tool-desc">View and read PDFs online</div>
+    </div>
+    <div class="tool-card" data-cat="bonus" data-id="pwd-checker" onclick="openTool('pwd-checker')">
+      <div class="tool-icon" style="background:#fffbeb"><i class="fa-solid fa-shield-check" style="color:#d97706"></i></div>
+      <div class="tool-name">Password Strength</div>
+      <div class="tool-desc">Check PDF password strength</div>
+    </div>
+    <div class="tool-card" data-cat="bonus" data-id="batch" onclick="openTool('batch')">
+      <span class="tool-badge badge-pro">Pro</span>
+      <div class="tool-icon" style="background:#faf5ff"><i class="fa-solid fa-layer-group" style="color:#7c3aed"></i></div>
+      <div class="tool-name">Batch Process</div>
+      <div class="tool-desc">Process multiple PDFs at once</div>
+    </div>
+    <div class="tool-card" data-cat="bonus" data-id="flatten" onclick="openTool('flatten')">
+      <div class="tool-icon" style="background:#fff7ed"><i class="fa-solid fa-rectangle-list" style="color:#f97316"></i></div>
+      <div class="tool-name">Flatten PDF</div>
+      <div class="tool-desc">Merge form fields into flat PDF</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RECENT FILES -->
+<div class="recent-section" id="recent-section" style="display:none">
+  <div class="section-hdr"><h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--text4);margin-right:8px"></i>Recent Files</h2><a href="#">Clear all</a></div>
+  <div class="recent-grid" id="recent-grid"></div>
+</div>
+
+<!-- FEATURES BANNER -->
+<div class="features-banner">
+  <div class="features-inner">
+    <h2 style="font-size:24px;font-weight:800;text-align:center;margin-bottom:6px">Why choose PDFly Pro?</h2>
+    <p style="text-align:center;color:var(--text3);font-size:14px">Trusted by millions worldwide for fast, secure, and reliable PDF processing</p>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon" style="background:#fff0f3"><i class="fa-solid fa-bolt" style="color:#e8002d;font-size:20px"></i></div><div class="feat-text"><h3>Lightning Fast</h3><p>Process PDFs in seconds with our optimized cloud engine. No waiting, no lag.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#f0fdf4"><i class="fa-solid fa-lock" style="color:#16a34a;font-size:20px"></i></div><div class="feat-text"><h3>Bank-Level Security</h3><p>256-bit SSL encryption. Files auto-deleted after 2 hours. ISO 27001 certified.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#eff6ff"><i class="fa-solid fa-cloud" style="color:#2563eb;font-size:20px"></i></div><div class="feat-text"><h3>Works Everywhere</h3><p>No installation needed. Works on any browser, any device, any OS.</p></div></div>
+      <div class="feat-card"><div class="feat-icon" style="background:#faf5ff"><i class="fa-solid fa-robot" style="color:#7c3aed;font-size:20px"></i></div><div class="feat-text"><h3>AI-Powered Tools</h3><p>Summarize, translate, and chat with PDFs using cutting-edge AI technology.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">PDF Tools</div></div>
+    <div class="stat"><div class="stat-num">850M+</div><div class="stat-label">Files Processed</div></div>
+    <div class="stat"><div class="stat-num">190+</div><div class="stat-label">Countries</div></div>
+    <div class="stat"><div class="stat-num">99.9%</div><div class="stat-label">Uptime</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">App Rating</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="logo" href="#"><div class="logo-box"><i class="fa-solid fa-file-pdf"></i></div>PDFlyPro</a>
+        <p style="margin-top:12px">Your complete PDF toolkit. Free, fast and secure. No signup required for basic tools.</p>
+        <div class="trust-badges">
+          <div class="trust-badge"><i class="fa-solid fa-shield"></i>ISO 27001</div>
+          <div class="trust-badge"><i class="fa-solid fa-lock"></i>SSL Secured</div>
+          <div class="trust-badge"><i class="fa-solid fa-certificate"></i>GDPR</div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Organize</h4>
+        <a href="#">Merge PDF</a><a href="#">Split PDF</a><a href="#">Remove Pages</a><a href="#">Rotate PDF</a><a href="#">Organize PDF</a>
+      </div>
+      <div class="footer-col">
+        <h4>Convert</h4>
+        <a href="#">JPG to PDF</a><a href="#">Word to PDF</a><a href="#">PDF to Word</a><a href="#">PDF to JPG</a><a href="#">HTML to PDF</a>
+      </div>
+      <div class="footer-col">
+        <h4>Security</h4>
+        <a href="#">Protect PDF</a><a href="#">Unlock PDF</a><a href="#">Sign PDF</a><a href="#">Redact PDF</a><a href="#">Compare PDF</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a><a href="#">Blog</a><a href="#">Pricing</a><a href="#">Contact</a><a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 PDFly Pro — Files deleted after 2 hours. Your privacy matters.</div>
+      <div class="footer-socials">
+        <a class="social-btn" href="#"><i class="fa-brands fa-twitter"></i></a>
+        <a class="social-btn" href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a class="social-btn" href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a class="social-btn" href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a class="social-btn" href="#"><i class="fa-brands fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WORKSPACE MODAL -->
+<div class="workspace-overlay" id="ws-overlay" onclick="closeWorkspace(event)">
+  <div class="workspace-panel" id="ws-panel">
+    <div class="ws-handle"></div>
+    <div class="ws-header">
+      <div class="ws-icon" id="ws-icon"></div>
+      <div class="ws-info">
+        <div class="ws-title" id="ws-title">Tool Name</div>
+        <div class="ws-sub" id="ws-sub">Tool description</div>
+      </div>
+      <button class="ws-close" onclick="closeWorkspaceFn()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="ws-body" id="ws-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ======================== API BASE URL CONFIGURATION ========================
+// Detect if running on localhost or Replit and set API URL accordingly
+const getApiUrl = () => {
+  const host = window.location.hostname;
+  const port = window.location.port;
+  // If on localhost, use localhost:5000; otherwise use current origin
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return 'http://localhost:5000';
+  }
+  // For Replit or other deployments, use the current origin
+  return window.location.origin;
+};
+const API_BASE_URL = getApiUrl();
+
+// ======================== TOOL DEFINITIONS ========================
+const TOOLS = {
+  'merge': {
+    cat:'organize', icon:'<i class="fa-solid fa-object-group" style="color:#e8002d"></i>', bg:'#fff0f3',
+    title:'Merge PDF', sub:'Combine multiple PDFs into a single document',
+    accept:'.pdf', multi:true, label:'Merge PDFs',
+    extras:`
+      <div class="opts"><div class="opts-title"><i class="fa-solid fa-sliders"></i> Options</div>
+      <div class="opts-grid">
+        <div class="opt-group"><div class="opt-label">Page order</div>
+          <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Original</button><button class="tog-btn" onclick="tog(this)">Reversed</button></div></div>
+        <div class="opt-group"><div class="opt-label">Blank page between</div>
+          <label class="checkbox-row"><input type="checkbox" id="blank-sep"><span>Add blank separator page</span></label></div>
+      </div></div>`
+  },
+  'split': {
+    cat:'organize', icon:'<i class="fa-solid fa-scissors" style="color:#f97316"></i>', bg:'#fff7ed',
+    title:'Split PDF', sub:'Split into individual pages or page ranges',
+    accept:'.pdf', multi:false, label:'Split PDF',
+    extras:`
+      <div class="opts"><div class="opts-title"><i class="fa-solid fa-sliders"></i> Split Options</div>
+      <div class="opts-grid">
+        <div class="opt-group"><div class="opt-label">Mode</div>
+          <div class="toggle-group">
+            <button class="tog-btn on" onclick="tog(this)">All pages</button>
+            <button class="tog-btn" onclick="tog(this)">By range</button>
+            <button class="tog-btn" onclick="tog(this)">Fixed size</button>
+          </div></div>
+        <div class="opt-group"><div class="opt-label">Page range</div>
+          <input class="opt-input" type="text" placeholder="e.g. 1-3, 5, 7-9" style="width:180px"></div>
+      </div></div>`
+  },
+  'remove-pages': {
+    cat:'organize', icon:'<i class="fa-solid fa-trash-can" style="color:#ef4444"></i>', bg:'#fef2f2',
+    title:'Remove Pages', sub:'Delete specific pages from your PDF',
+    accept:'.pdf', multi:false, label:'Remove Pages',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Pages to remove</div>
+        <input class="opt-input" type="text" placeholder="e.g. 1, 3-5, last" style="width:220px"></div>
+    </div></div>`
+  },
+  'extract': {
+    cat:'organize', icon:'<i class="fa-solid fa-file-export" style="color:#0ea5e9"></i>', bg:'#f0f9ff',
+    title:'Extract Pages', sub:'Extract selected pages as a new PDF file',
+    accept:'.pdf', multi:false, label:'Extract Pages',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Pages to extract</div>
+        <input class="opt-input" type="text" placeholder="e.g. 2-4, 6" style="width:200px"></div>
+      <div class="opt-group"><div class="opt-label">Output</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Single PDF</button><button class="tog-btn" onclick="tog(this)">Separate files</button></div></div>
+    </div></div>`
+  },
+  'reorder': {
+    cat:'organize', icon:'<i class="fa-solid fa-list-ol" style="color:#22c55e"></i>', bg:'#f0fdf4',
+    title:'Organize PDF', sub:'Reorder, rotate, or delete individual pages visually',
+    accept:'.pdf', multi:false, label:'Save Organized PDF',
+    extras:``
+  },
+  'rotate': {
+    cat:'organize', icon:'<i class="fa-solid fa-rotate-right" style="color:#a855f7"></i>', bg:'#fdf4ff',
+    title:'Rotate PDF', sub:'Rotate one or all pages of your PDF',
+    accept:'.pdf', multi:false, label:'Apply Rotation',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Rotation angle</div>
+        <div class="toggle-group"><button class="tog-btn" onclick="tog(this)">90° Right</button><button class="tog-btn on" onclick="tog(this)">180°</button><button class="tog-btn" onclick="tog(this)">90° Left</button></div></div>
+      <div class="opt-group"><div class="opt-label">Apply to</div>
+        <select class="opt-select"><option>All pages</option><option>Even pages only</option><option>Odd pages only</option><option>Specific pages…</option></select></div>
+    </div></div>`
+  },
+  'compress': {
+    cat:'optimize', icon:'<i class="fa-solid fa-compress" style="color:#7c3aed"></i>', bg:'#faf5ff',
+    title:'Compress PDF', sub:'Reduce file size while optimizing PDF quality',
+    accept:'.pdf', multi:false, label:'Compress PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Compression level</div>
+        <div class="toggle-group"><button class="tog-btn" onclick="tog(this)">Low</button><button class="tog-btn on" onclick="tog(this)">Recommended</button><button class="tog-btn" onclick="tog(this)">Extreme</button></div></div>
+      <div class="opt-group"><div class="opt-label">Image DPI</div>
+        <div class="range-row"><input type="range" min="72" max="300" value="150" step="1" oninput="this.nextElementSibling.textContent=this.value+' dpi'"><span class="range-val">150 dpi</span></div></div>
+    </div></div>`
+  },
+  'repair': {
+    cat:'optimize', icon:'<i class="fa-solid fa-wrench" style="color:#16a34a"></i>', bg:'#f0fdf4',
+    title:'Repair PDF', sub:'Recover data from corrupted or damaged PDF files',
+    accept:'.pdf', multi:false, label:'Repair PDF', extras:``
+  },
+  'ocr': {
+    cat:'optimize', icon:'<i class="fa-solid fa-text-height" style="color:#f97316"></i>', bg:'#fff7ed',
+    title:'OCR PDF', sub:'Convert scanned PDFs into searchable, selectable text',
+    accept:'.pdf', multi:false, label:'Run OCR',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Language</div>
+        <select class="opt-select"><option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Hindi</option><option>Arabic</option><option>Chinese</option><option>Japanese</option></select></div>
+      <div class="opt-group"><div class="opt-label">Output format</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Searchable PDF</button><button class="tog-btn" onclick="tog(this)">Plain text</button></div></div>
+    </div></div>`
+  },
+  'jpg2pdf': {
+    cat:'convert', icon:'<i class="fa-solid fa-image" style="color:#d97706"></i>', bg:'#fffbeb',
+    title:'JPG to PDF', sub:'Convert one or multiple images into a PDF file',
+    accept:'.jpg,.jpeg,.png,.gif,.bmp,.webp', multi:true, label:'Convert to PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Orientation</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Portrait</button><button class="tog-btn" onclick="tog(this)">Landscape</button><button class="tog-btn" onclick="tog(this)">Auto</button></div></div>
+      <div class="opt-group"><div class="opt-label">Margin</div>
+        <select class="opt-select"><option>No margin</option><option>Small</option><option>Medium</option><option>Large</option></select></div>
+      <div class="opt-group"><div class="opt-label">Page size</div>
+        <select class="opt-select"><option>A4</option><option>Letter</option><option>Legal</option><option>A3</option><option>Fit to image</option></select></div>
+    </div></div>`
+  },
+  'word2pdf': {
+    cat:'convert', icon:'<i class="fa-solid fa-file-word" style="color:#2563eb"></i>', bg:'#eff6ff',
+    title:'Word to PDF', sub:'Convert Microsoft Word DOCX/DOC files to PDF',
+    accept:'.doc,.docx', multi:false, label:'Convert to PDF', extras:``
+  },
+  'excel2pdf': {
+    cat:'convert', icon:'<i class="fa-solid fa-file-excel" style="color:#16a34a"></i>', bg:'#f0fdf4',
+    title:'Excel to PDF', sub:'Convert Excel spreadsheets to PDF format',
+    accept:'.xls,.xlsx,.csv', multi:false, label:'Convert to PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Page layout</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Portrait</button><button class="tog-btn" onclick="tog(this)">Landscape</button></div></div>
+      <div class="opt-group"><div class="opt-label">Fit to page</div>
+        <label class="checkbox-row"><input type="checkbox" checked><span>Fit all columns on page</span></label></div>
+    </div></div>`
+  },
+  'ppt2pdf': {
+    cat:'convert', icon:'<i class="fa-solid fa-file-powerpoint" style="color:#f97316"></i>', bg:'#fff7ed',
+    title:'PowerPoint to PDF', sub:'Convert PPT/PPTX presentations to PDF',
+    accept:'.ppt,.pptx', multi:false, label:'Convert to PDF', extras:``
+  },
+  'html2pdf': {
+    cat:'convert', icon:'<i class="fa-brands fa-html5" style="color:#a855f7"></i>', bg:'#faf5ff',
+    title:'HTML to PDF', sub:'Convert any web page URL to a PDF document',
+    accept:'', multi:false, label:'Convert URL to PDF',
+    extras:`<div class="opts"><div class="opts-grid" style="width:100%">
+      <div class="opt-group" style="width:100%"><div class="opt-label">Web page URL</div>
+        <input class="opt-input" type="url" placeholder="https://example.com" style="width:100%;max-width:420px"></div>
+      <div class="opt-group"><div class="opt-label">Page size</div>
+        <select class="opt-select"><option>A4</option><option>Letter</option><option>A3</option></select></div>
+    </div></div>`,
+    noFile:true
+  },
+  'pdf2jpg': {
+    cat:'convert', icon:'<i class="fa-solid fa-file-image" style="color:#f97316"></i>', bg:'#fff7ed',
+    title:'PDF to JPG', sub:'Convert each PDF page into a high-quality JPEG image',
+    accept:'.pdf', multi:false, label:'Convert to JPG',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Image quality</div>
+        <div class="range-row"><input type="range" min="30" max="100" value="80" oninput="this.nextElementSibling.textContent=this.value+'%'"><span class="range-val">80%</span></div></div>
+      <div class="opt-group"><div class="opt-label">DPI</div>
+        <div class="toggle-group"><button class="tog-btn" onclick="tog(this)">72</button><button class="tog-btn on" onclick="tog(this)">150</button><button class="tog-btn" onclick="tog(this)">300</button></div></div>
+      <div class="opt-group"><div class="opt-label">Format</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">JPG</button><button class="tog-btn" onclick="tog(this)">PNG</button><button class="tog-btn" onclick="tog(this)">WebP</button></div></div>
+    </div></div>`
+  },
+  'pdf2word': {
+    cat:'convert', icon:'<i class="fa-regular fa-file-word" style="color:#4f46e5"></i>', bg:'#eff6ff',
+    title:'PDF to Word', sub:'Convert PDF into editable Word documents with high accuracy',
+    accept:'.pdf', multi:false, label:'Convert to Word',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Format</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">DOCX</button><button class="tog-btn" onclick="tog(this)">DOC</button><button class="tog-btn" onclick="tog(this)">RTF</button></div></div>
+    </div></div>`
+  },
+  'pdf2excel': {
+    cat:'convert', icon:'<i class="fa-regular fa-file-excel" style="color:#16a34a"></i>', bg:'#f0fdf4',
+    title:'PDF to Excel', sub:'Extract tables and data from PDFs into spreadsheets',
+    accept:'.pdf', multi:false, label:'Convert to Excel', extras:``
+  },
+  'pdf2ppt': {
+    cat:'convert', icon:'<i class="fa-regular fa-file-powerpoint" style="color:#ea580c"></i>', bg:'#fff7ed',
+    title:'PDF to PowerPoint', sub:'Turn PDF pages into editable PPT slides',
+    accept:'.pdf', multi:false, label:'Convert to PPT', extras:``
+  },
+  'pdf2pdfa': {
+    cat:'convert', icon:'<i class="fa-solid fa-archive" style="color:#0891b2"></i>', bg:'#f0f9ff',
+    title:'PDF to PDF/A', sub:'Convert to ISO-standard archival format',
+    accept:'.pdf', multi:false, label:'Convert to PDF/A',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Conformance level</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">PDF/A-1b</button><button class="tog-btn" onclick="tog(this)">PDF/A-2b</button><button class="tog-btn" onclick="tog(this)">PDF/A-3b</button></div></div>
+    </div></div>`
+  },
+  'watermark': {
+    cat:'edit', icon:'<i class="fa-solid fa-stamp" style="color:#c026d3"></i>', bg:'#fdf4ff',
+    title:'Add Watermark', sub:'Stamp a custom text or image over your PDF pages',
+    accept:'.pdf', multi:false, label:'Add Watermark',
+    extras:`<div class="opts"><div class="opts-title"><i class="fa-solid fa-sliders"></i> Watermark Settings</div>
+      <div class="opts-grid">
+        <div class="opt-group" style="width:100%"><div class="opt-label">Watermark text</div>
+          <input class="opt-input" type="text" value="CONFIDENTIAL" style="width:280px"></div>
+        <div class="opt-group"><div class="opt-label">Font size</div>
+          <div class="range-row"><input type="range" min="12" max="120" value="48" oninput="this.nextElementSibling.textContent=this.value+'pt'"><span class="range-val">48pt</span></div></div>
+        <div class="opt-group"><div class="opt-label">Opacity</div>
+          <div class="range-row"><input type="range" min="5" max="100" value="30" oninput="this.nextElementSibling.textContent=this.value+'%'"><span class="range-val">30%</span></div></div>
+        <div class="opt-group"><div class="opt-label">Rotation</div>
+          <div class="range-row"><input type="range" min="-90" max="90" value="-45" oninput="this.nextElementSibling.textContent=this.value+'°'"><span class="range-val">-45°</span></div></div>
+        <div class="opt-group"><div class="opt-label">Color</div>
+          <div class="color-opts">
+            <div class="color-dot sel" style="background:#e8002d" onclick="selColor(this)"></div>
+            <div class="color-dot" style="background:#1f2937" onclick="selColor(this)"></div>
+            <div class="color-dot" style="background:#2563eb" onclick="selColor(this)"></div>
+            <div class="color-dot" style="background:#16a34a" onclick="selColor(this)"></div>
+            <div class="color-dot" style="background:#d97706" onclick="selColor(this)"></div>
+          </div></div>
+        <div class="opt-group"><div class="opt-label">Pages</div>
+          <select class="opt-select"><option>All pages</option><option>First page only</option><option>Last page only</option></select></div>
+      </div></div>`
+  },
+  'pagenumbers': {
+    cat:'edit', icon:'<i class="fa-solid fa-hashtag" style="color:#0891b2"></i>', bg:'#f0f9ff',
+    title:'Add Page Numbers', sub:'Add page numbers to any PDF with custom styling',
+    accept:'.pdf', multi:false, label:'Add Page Numbers',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Position</div>
+        <select class="opt-select" id="pn-pos" onchange="updatePageNumPreview()">
+          <option>Bottom Center</option><option>Bottom Right</option><option>Bottom Left</option>
+          <option>Top Center</option><option>Top Right</option><option>Top Left</option>
+        </select></div>
+      <div class="opt-group"><div class="opt-label">Format</div>
+        <select class="opt-select"><option>1, 2, 3…</option><option>Page 1 of N</option><option>i, ii, iii…</option><option>A, B, C…</option></select></div>
+      <div class="opt-group"><div class="opt-label">Start from</div>
+        <input class="opt-input" type="number" value="1" min="1" style="width:80px"></div>
+    </div>
+    <div class="pagenum-preview" id="pn-preview">
+      <div class="pdf-page-mock">
+        <div class="lines"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+        <div class="pagenum-label bottom-center" id="pn-label">1</div>
+      </div>
+    </div></div>`
+  },
+  'crop': {
+    cat:'edit', icon:'<i class="fa-solid fa-crop-alt" style="color:#d97706"></i>', bg:'#fffbeb',
+    title:'Crop PDF', sub:'Crop margins or select a specific area of your PDF',
+    accept:'.pdf', multi:false, label:'Crop PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Margin (mm)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:200px">
+          <input class="opt-input" type="number" placeholder="Top" style="width:100%">
+          <input class="opt-input" type="number" placeholder="Right" style="width:100%">
+          <input class="opt-input" type="number" placeholder="Bottom" style="width:100%">
+          <input class="opt-input" type="number" placeholder="Left" style="width:100%">
+        </div></div>
+      <div class="opt-group"><div class="opt-label">Apply to</div>
+        <select class="opt-select"><option>All pages</option><option>Even pages</option><option>Odd pages</option></select></div>
+    </div></div>`
+  },
+  'edit': {
+    cat:'edit', icon:'<i class="fa-solid fa-pen" style="color:#e8002d"></i>', bg:'#fff0f3',
+    title:'Edit PDF', sub:'Add text, images, shapes or freehand annotations',
+    accept:'.pdf', multi:false, label:'Open in Editor', extras:``
+  },
+  'forms': {
+    cat:'edit', icon:'<i class="fa-solid fa-wpforms" style="color:#16a34a"></i>', bg:'#f0fdf4',
+    title:'PDF Forms', sub:'Create interactive fillable PDFs or fill existing forms',
+    accept:'.pdf', multi:false, label:'Open Forms Editor',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Mode</div>
+        <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Fill form</button><button class="tog-btn" onclick="tog(this)">Create form</button></div></div>
+    </div></div>`
+  },
+  'metadata': {
+    cat:'edit', icon:'<i class="fa-solid fa-tags" style="color:#7c3aed"></i>', bg:'#faf5ff',
+    title:'Edit PDF Metadata', sub:'Change document title, author, subject and keywords',
+    accept:'.pdf', multi:false, label:'Save Metadata',
+    extras:`<div class="opts" style="margin-top:16px">
+      <table class="meta-table">
+        <tr><td>Title</td><td><input type="text" placeholder="Document title"></td></tr>
+        <tr><td>Author</td><td><input type="text" placeholder="Author name"></td></tr>
+        <tr><td>Subject</td><td><input type="text" placeholder="Subject"></td></tr>
+        <tr><td>Keywords</td><td><input type="text" placeholder="keyword1, keyword2"></td></tr>
+        <tr><td>Creator</td><td><input type="text" placeholder="Application name"></td></tr>
+        <tr><td>Language</td><td><input type="text" placeholder="en-US"></td></tr>
+      </table></div>`
+  },
+  'protect': {
+    cat:'security', icon:'<i class="fa-solid fa-lock" style="color:#ef4444"></i>', bg:'#fef2f2',
+    title:'Protect PDF', sub:'Encrypt your PDF with a password and set permissions',
+    accept:'.pdf', multi:false, label:'Protect PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Password</div>
+        <input class="opt-input" type="password" id="protect-pwd" placeholder="Enter password" oninput="checkPwdStrength(this.value)">
+        <div class="pwd-strength">
+          <div class="pwd-bars"><div class="pwd-bar" id="pb1"></div><div class="pwd-bar" id="pb2"></div><div class="pwd-bar" id="pb3"></div><div class="pwd-bar" id="pb4"></div></div>
+          <div class="pwd-label" id="pwd-label">Enter a password</div>
+        </div></div>
+      <div class="opt-group"><div class="opt-label">Confirm password</div>
+        <input class="opt-input" type="password" placeholder="Confirm password"></div>
+      <div class="opt-group"><div class="opt-label">Permissions</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label class="checkbox-row"><input type="checkbox"><span>Allow printing</span></label>
+          <label class="checkbox-row"><input type="checkbox"><span>Allow copying text</span></label>
+          <label class="checkbox-row"><input type="checkbox"><span>Allow editing</span></label>
+        </div></div>
+    </div></div>`
+  },
+  'unlock': {
+    cat:'security', icon:'<i class="fa-solid fa-lock-open" style="color:#22c55e"></i>', bg:'#f0fdf4',
+    title:'Unlock PDF', sub:'Remove password protection from encrypted PDF files',
+    accept:'.pdf', multi:false, label:'Unlock PDF',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Current password (if known)</div>
+        <input class="opt-input" type="password" placeholder="Enter password (optional)"></div>
+    </div></div>`
+  },
+  'sign': {
+    cat:'security', icon:'<i class="fa-solid fa-signature" style="color:#e8002d"></i>', bg:'#fff0f3',
+    title:'Sign PDF', sub:'Draw, type, or upload your signature and place it on the PDF',
+    accept:'.pdf', multi:false, label:'Add Signature',
+    extras:`<div class="opts"><div class="opts-title"><i class="fa-solid fa-pen-fancy"></i> Create Signature</div>
+      <div class="toggle-group" style="margin-bottom:14px;width:fit-content">
+        <button class="tog-btn on" onclick="tog(this);showSignTab('draw')">Draw</button>
+        <button class="tog-btn" onclick="tog(this);showSignTab('type')">Type</button>
+        <button class="tog-btn" onclick="tog(this);showSignTab('upload')">Upload</button>
+      </div>
+      <div id="sign-draw">
+        <canvas id="sign-canvas" width="480" height="130"></canvas>
+        <div class="sign-actions">
+          <button class="btn-secondary" onclick="clearCanvas()"><i class="fa-solid fa-eraser"></i> Clear</button>
+          <select class="opt-select"><option>Black</option><option>Blue</option><option>Red</option></select>
+          <div class="range-row" style="margin-left:8px"><span style="font-size:12px;color:var(--text3)">Thickness</span><input type="range" min="1" max="8" value="2" style="width:80px"></div>
+        </div>
+      </div>
+      <div id="sign-type" style="display:none">
+        <input class="opt-input" type="text" placeholder="Type your name here…" style="width:100%;font-size:22px;font-family:'Dancing Script',cursive,serif;padding:14px">
+      </div>
+      <div id="sign-upload" style="display:none">
+        <div class="dropzone" style="padding:24px" onclick="document.getElementById('sig-file').click()">
+          <i class="fa-solid fa-image dz-icon" style="font-size:28px"></i>
+          <p style="font-size:13px">Upload PNG, JPG or SVG signature image</p>
+        </div>
+        <input type="file" id="sig-file" accept=".png,.jpg,.svg" style="display:none">
+      </div>
+    </div>`
+  },
+  'redact': {
+    cat:'security', icon:'<i class="fa-solid fa-eraser" style="color:#dc2626"></i>', bg:'#fef2f2',
+    title:'Redact PDF', sub:'Permanently black out sensitive text and images',
+    accept:'.pdf', multi:false, label:'Apply Redactions',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Redaction color</div>
+        <div class="color-opts">
+          <div class="color-dot sel" style="background:#000" onclick="selColor(this)"></div>
+          <div class="color-dot" style="background:#e8002d" onclick="selColor(this)"></div>
+          <div class="color-dot" style="background:#1f2937" onclick="selColor(this)"></div>
+        </div></div>
+      <div class="opt-group"><div class="opt-label">Search & redact text</div>
+        <input class="opt-input" type="text" placeholder="Enter text to find and redact"></div>
+    </div></div>`
+  },
+  'compare': {
+    cat:'security', icon:'<i class="fa-solid fa-code-compare" style="color:#0ea5e9"></i>', bg:'#f0f9ff',
+    title:'Compare PDF', sub:'Show side-by-side diff of two PDF files',
+    accept:'.pdf', multi:true, label:'Compare PDFs',
+    extras:`<div id="compare-result" style="margin-top:16px;display:none">
+      <div class="opts-title"><i class="fa-solid fa-eye"></i> Comparison Result</div>
+      <div class="compare-grid">
+        <div class="compare-pane"><div class="compare-pane-header">📄 File 1</div>
+          <div style="padding:8px"><div class="diff-line diff-same">This is a common line in both documents.</div><div class="diff-line diff-remove">- This line was removed from file 2.</div><div class="diff-line diff-same">Another matching line here.</div></div></div>
+        <div class="compare-pane"><div class="compare-pane-header">📄 File 2</div>
+          <div style="padding:8px"><div class="diff-line diff-same">This is a common line in both documents.</div><div class="diff-line diff-add">+ This is a new line added in file 2.</div><div class="diff-line diff-same">Another matching line here.</div></div></div>
+      </div></div>`
+  },
+  'ai-summarize': {
+    cat:'ai', icon:'<i class="fa-solid fa-sparkles" style="color:#7c3aed"></i>', bg:'linear-gradient(135deg,rgba(124,58,237,.15),rgba(37,99,235,.15))',
+    title:'AI Summarizer', sub:'Instantly generate a concise AI-powered summary of your PDF',
+    accept:'.pdf,.txt', multi:false, label:'Summarize with AI',
+    extras:`<div class="opts">
+      <div class="ai-badge-wrap"><i class="fa-solid fa-robot"></i> Powered by Claude AI</div>
+      <div class="opts-grid">
+        <div class="opt-group"><div class="opt-label">Summary length</div>
+          <div class="toggle-group"><button class="tog-btn" onclick="tog(this)">Brief</button><button class="tog-btn on" onclick="tog(this)">Standard</button><button class="tog-btn" onclick="tog(this)">Detailed</button></div></div>
+        <div class="opt-group"><div class="opt-label">Focus on</div>
+          <select class="opt-select"><option>Key points</option><option>Action items</option><option>Findings & conclusions</option><option>Executive summary</option></select></div>
+      </div>
+      <div id="ai-sum-result" class="ai-result"></div>
+    </div>`
+  },
+  'ai-translate': {
+    cat:'ai', icon:'<i class="fa-solid fa-language" style="color:#059669"></i>', bg:'linear-gradient(135deg,rgba(5,150,105,.12),rgba(37,99,235,.12))',
+    title:'Translate PDF', sub:'AI-powered PDF translation — keeps layout intact',
+    accept:'.pdf', multi:false, label:'Translate PDF',
+    extras:`<div class="opts">
+      <div class="ai-badge-wrap"><i class="fa-solid fa-robot"></i> Powered by Claude AI</div>
+      <div class="opts-grid">
+        <div class="opt-group"><div class="opt-label">From</div>
+          <select class="opt-select"><option>Auto-detect</option><option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Hindi</option><option>Arabic</option></select></div>
+        <div class="opt-group"><div class="opt-label">To</div>
+          <select class="opt-select"><option>Hindi</option><option>Spanish</option><option>French</option><option>German</option><option>English</option><option>Arabic</option><option>Japanese</option><option>Chinese (Simplified)</option></select></div>
+        <div class="opt-group"><div class="opt-label">Style</div>
+          <div class="toggle-group"><button class="tog-btn on" onclick="tog(this)">Formal</button><button class="tog-btn" onclick="tog(this)">Casual</button></div></div>
+      </div>
+    </div>`
+  },
+  'ai-chat': {
+    cat:'ai', icon:'<i class="fa-solid fa-comments" style="color:#e8002d"></i>', bg:'linear-gradient(135deg,rgba(232,0,45,.1),rgba(124,58,237,.1))',
+    title:'Chat with PDF', sub:'Ask questions and get instant AI answers about your document',
+    accept:'.pdf', multi:false, label:'Start Chatting',
+    extras:`<div class="opts">
+      <div class="ai-badge-wrap"><i class="fa-solid fa-robot"></i> Powered by Claude AI</div>
+      <div id="chat-messages" style="max-height:200px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px"></div>
+      <div style="display:flex;gap:8px">
+        <input class="opt-input" id="chat-input" type="text" placeholder="Ask anything about your PDF…" style="flex:1;width:auto" onkeydown="if(event.key==='Enter')sendChatMsg()">
+        <button class="btn-secondary" onclick="sendChatMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>`
+  },
+  'scan2pdf': {
+    cat:'bonus', icon:'<i class="fa-solid fa-camera" style="color:#16a34a"></i>', bg:'#f0fdf4',
+    title:'Scan to PDF', sub:'Use your device camera to capture and convert documents',
+    accept:'image/*', multi:true, label:'Create PDF from Scan', extras:``
+  },
+  'pdf-viewer': {
+    cat:'bonus', icon:'<i class="fa-solid fa-eye" style="color:#0891b2"></i>', bg:'#f0f9ff',
+    title:'PDF Viewer', sub:'View and read any PDF directly in your browser',
+    accept:'.pdf', multi:false, label:'View PDF', extras:``
+  },
+  'pwd-checker': {
+    cat:'bonus', icon:'<i class="fa-solid fa-shield-check" style="color:#d97706"></i>', bg:'#fffbeb',
+    title:'Password Strength Checker', sub:'Test how strong your PDF password is before using it',
+    accept:'', multi:false, label:'Check Password',
+    noFile:true,
+    extras:`<div class="opts">
+      <div class="opts-grid">
+        <div class="opt-group" style="width:100%"><div class="opt-label">Enter password to test</div>
+          <input class="opt-input" id="pwdcheck-input" type="text" placeholder="Type a password to evaluate…" style="width:100%;max-width:360px" oninput="liveCheckPwd(this.value)">
+          <div class="pwd-strength" id="pwdcheck-strength">
+            <div class="pwd-bars"><div class="pwd-bar" id="pc1"></div><div class="pwd-bar" id="pc2"></div><div class="pwd-bar" id="pc3"></div><div class="pwd-bar" id="pc4"></div></div>
+            <div class="pwd-label" id="pwdcheck-label">Enter a password to check its strength</div>
+          </div>
+        </div>
+        <div id="pwdcheck-tips" style="font-size:12px;color:var(--text3);line-height:1.7;margin-top:8px;display:none"></div>
+      </div></div>`
+  },
+  'batch': {
+    cat:'bonus', icon:'<i class="fa-solid fa-layer-group" style="color:#7c3aed"></i>', bg:'#faf5ff',
+    title:'Batch Process', sub:'Process multiple PDFs simultaneously with the same settings',
+    accept:'.pdf', multi:true, label:'Process All Files',
+    extras:`<div class="opts"><div class="opts-grid">
+      <div class="opt-group"><div class="opt-label">Operation</div>
+        <select class="opt-select"><option>Compress all</option><option>Rotate all</option><option>Add watermark to all</option><option>Add page numbers to all</option><option>Convert all to JPG</option></select></div>
+    </div></div>`
+  },
+  'flatten': {
+    cat:'bonus', icon:'<i class="fa-solid fa-rectangle-list" style="color:#f97316"></i>', bg:'#fff7ed',
+    title:'Flatten PDF', sub:'Merge all form fields and annotations into flat static content',
+    accept:'.pdf', multi:false, label:'Flatten PDF', extras:``
+  }
+};
+
+// ======================== STATE ========================
+let curTool = null;
+let uploadedFiles = [];
+let uploadProgress = [];
+let recentFiles = [];
+let darkMode = false;
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+// ======================== SEARCH ========================
+function globalSearch(val) {
+  const v = val.toLowerCase().trim();
+  document.querySelectorAll('.tool-card').forEach(c => {
+    if (!v) { c.style.display=''; return; }
+    const n = c.querySelector('.tool-name').textContent.toLowerCase();
+    const d = c.querySelector('.tool-desc').textContent.toLowerCase();
+    c.style.display = (n.includes(v)||d.includes(v)) ? '' : 'none';
+  });
+  // sync both search inputs
+  document.getElementById('global-search').value = val;
+  document.getElementById('hero-search').value = val;
+}
+
+// ======================== FILTER ========================
+function filterCat(el, cat) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tool-card').forEach(c => {
+    c.style.display = (cat==='all' || c.dataset.cat===cat) ? '' : 'none';
+  });
+}
+
+// ======================== THEME ========================
+function toggleTheme() {
+  darkMode = !darkMode;
+  document.documentElement.setAttribute('data-theme', darkMode?'dark':'');
+  document.getElementById('theme-icon').className = darkMode ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+  showToast(darkMode ? '🌙 Dark mode on' : '☀️ Light mode on', 'info');
+}
+
+// ======================== OPEN TOOL ========================
+function openTool(id) {
+  const t = TOOLS[id];
+  if (!t) return;
+  curTool = id;
+  uploadedFiles = [];
+  uploadProgress = [];
+
+  // Set header
+  document.getElementById('ws-icon').innerHTML = `<div style="width:46px;height:46px;background:${t.bg};border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px">${t.icon}</div>`;
+  document.getElementById('ws-title').textContent = t.title;
+  document.getElementById('ws-sub').textContent = t.sub;
+
+  // Build body
+  let html = '';
+
+  if (!t.noFile) {
+    const exts = t.accept.split(',').filter(Boolean).map(e=>e.trim().replace('.','').toUpperCase());
+    html += `
+      <div class="dropzone" id="ws-dz" onclick="document.getElementById('file-input').click()"
+        ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <i class="fa-solid fa-cloud-arrow-up dz-icon"></i>
+        <h3>Drop your file${t.multi?'(s)':''} here</h3>
+        <p>or <span class="browse">browse from computer</span></p>
+        ${exts.length ? `<div class="file-types">${exts.map(e=>`<span class="ft">${e}</span>`).join('')}</div>` : ''}
+      </div>
+      <input type="file" id="file-input" accept="${t.accept}" ${t.multi?'multiple':''} onchange="handleFiles(this.files)">
+      <div class="file-list-wrap"><div class="file-list" id="file-list"></div></div>`;
+  }
+
+  html += (t.extras || '');
+  html += `
+    <div class="ws-actions">
+      <button class="btn-action" id="ws-action-btn" onclick="runTool()" ${t.noFile?'':'disabled'}>
+        <span class="spinner" id="ws-spinner" style="display:none"></span>
+        <i class="fa-solid fa-bolt" id="ws-btn-icon"></i>
+        <span id="ws-btn-label">${t.label}</span>
+      </button>
+      ${!t.noFile ? `<button class="btn-secondary" onclick="clearFiles()"><i class="fa-solid fa-trash"></i> Clear files</button>` : ''}
+    </div>
+    <div class="prog-wrap" id="ws-prog">
+      <div class="prog-track"><div class="prog-fill" id="ws-prog-fill"></div></div>
+      <div class="prog-label"><span id="ws-prog-text">Processing…</span><span id="ws-prog-pct">0%</span></div>
+    </div>
+    <div class="result-box" id="ws-result"></div>
+    <div style="height:24px"></div>`;
+
+  document.getElementById('ws-body').innerHTML = html;
+  document.getElementById('ws-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Init signature canvas if needed
+  if (id === 'sign') initSignCanvas();
+  // Highlight selected card
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.toggle('selected', c.dataset.id===id));
+}
+
+function openToolById(id) { openTool(id); }
+
+function closeWorkspace(e) {
+  if (e && e.target !== document.getElementById('ws-overlay')) return;
+  closeWorkspaceFn();
+}
+function closeWorkspaceFn() {
+  document.getElementById('ws-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.tool-card').forEach(c=>c.classList.remove('selected'));
+}
+
+// ======================== FILE HANDLING ========================
+function handleFiles(files) {
+  for (const f of files) {
+    uploadedFiles.push(f);
+    uploadProgress.push({ pct: 0, status: 'Ready' });
+  }
+  renderFileList();
+}
+function onDragOver(e) { e.preventDefault(); document.getElementById('ws-dz')?.classList.add('dragover'); }
+function onDragLeave() { document.getElementById('ws-dz')?.classList.remove('dragover'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('ws-dz')?.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+}
+function formatSize(b) {
+  if (b<1024) return b+'B';
+  if (b<1048576) return (b/1024).toFixed(1)+'KB';
+  return (b/1048576).toFixed(1)+'MB';
+}
+function renderFileList() {
+  const list = document.getElementById('file-list');
+  if (!list) return;
+  list.innerHTML = '';
+  uploadedFiles.forEach((f, i) => {
+    const progress = uploadProgress[i] || { pct: 0, status: 'Ready' };
+    const icon = f.name.match(/\.(jpg|jpeg|png|gif|webp|bmp)$/i) ? 'fa-image' : f.name.match(/\.(doc|docx)$/i) ? 'fa-file-word' : f.name.match(/\.(xls|xlsx)$/i) ? 'fa-file-excel' : f.name.match(/\.(ppt|pptx)$/i) ? 'fa-file-powerpoint' : 'fa-file-pdf';
+    const div = document.createElement('div');
+    div.className = 'file-item';
+    div.innerHTML = `<div class="file-thumb"><i class="fa-solid ${icon}"></i></div><div class="file-info"><div class="file-name">${f.name}</div><div class="file-meta"><span class="file-size">${formatSize(f.size)}</span><span class="file-upload-status" id="fs-${i}">${progress.status}</span><span class="file-upload-pct" id="fpt-${i}">${Math.round(progress.pct)}%</span></div><div class="file-progress"><div class="file-progress-inner" id="fp-${i}" style="width:${progress.pct}%"></div></div></div><div class="file-actions"><button class="file-btn" title="Move up" onclick="moveFile(${i},-1)"><i class="fa-solid fa-arrow-up"></i></button><button class="file-btn" title="Remove" onclick="removeFile(${i})"><i class="fa-solid fa-xmark"></i></button></div>`;
+    list.appendChild(div);
+  });
+  const btn = document.getElementById('ws-action-btn');
+  if (btn) btn.disabled = uploadedFiles.length === 0;
+  // Show compare result hint
+  if (curTool==='compare' && uploadedFiles.length>=2) {
+    document.getElementById('compare-result').style.display = 'block';
+  }
+}
+function removeFile(i) { uploadedFiles.splice(i,1); uploadProgress.splice(i,1); renderFileList(); }
+function moveFile(i, dir) {
+  const j = i+dir;
+  if (j<0||j>=uploadedFiles.length) return;
+  [uploadedFiles[i],uploadedFiles[j]]=[uploadedFiles[j],uploadedFiles[i]];
+  [uploadProgress[i],uploadProgress[j]]=[uploadProgress[j],uploadProgress[i]];
+  renderFileList();
+  showToast('File order updated', 'info');
+}
+function clearFiles() { uploadedFiles=[]; uploadProgress=[]; renderFileList(); }
+
+function updateUploadProgress(totalPercent, status = 'Uploading') {
+  if (uploadedFiles.length === 0) return;
+
+  const totalSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0) || uploadedFiles.length;
+  const uploadedBytes = totalSize * Math.max(0, Math.min(100, totalPercent)) / 100;
+  let before = 0;
+
+  uploadedFiles.forEach((file, index) => {
+    const fileSize = file.size || 1;
+    const pct = Math.max(0, Math.min(100, ((uploadedBytes - before) / fileSize) * 100));
+    before += fileSize;
+    const rounded = Math.round(pct);
+    const fileStatus = rounded >= 100 ? 'Uploaded' : status;
+
+    uploadProgress[index] = { pct: rounded, status: fileStatus };
+    const bar = document.getElementById(`fp-${index}`);
+    const pctEl = document.getElementById(`fpt-${index}`);
+    const statusEl = document.getElementById(`fs-${index}`);
+    if (bar) bar.style.width = `${rounded}%`;
+    if (pctEl) pctEl.textContent = `${rounded}%`;
+    if (statusEl) statusEl.textContent = fileStatus;
+  });
+}
+
+// ======================== TOGGLE ========================
+function tog(el) {
+  el.closest('.toggle-group').querySelectorAll('.tog-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function selColor(el) {
+  el.closest('.color-opts').querySelectorAll('.color-dot').forEach(d=>d.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+// ======================== RUN TOOL ========================
+const PROCESS_STEPS = {
+  'merge':['Reading files…','Merging documents…','Optimizing…','Finalizing…'],
+  'split':['Analyzing PDF…','Splitting pages…','Creating files…','Done!'],
+  'compress':['Analyzing content…','Compressing images…','Optimizing structure…','Saving…'],
+  'ai-summarize':['Reading document…','Analyzing content…','Generating summary…','Polishing output…'],
+  'ai-translate':['Parsing document…','Translating content…','Preserving layout…','Building PDF…'],
+  'default':['Reading file…','Processing…','Applying settings…','Finalizing…']
+};
+
+async function runTool() {
+  const btn = document.getElementById('ws-action-btn');
+  const prog = document.getElementById('ws-prog');
+  const fill = document.getElementById('ws-prog-fill');
+  const progText = document.getElementById('ws-prog-text');
+  const progPct = document.getElementById('ws-prog-pct');
+  const spinner = document.getElementById('ws-spinner');
+  const btnIcon = document.getElementById('ws-btn-icon');
+  const result = document.getElementById('ws-result');
+
+  btn.disabled = true;
+  spinner.style.display = 'inline-block';
+  btnIcon.style.display = 'none';
+  prog.classList.add('show');
+  result.classList.remove('show');
+  fill.style.width = '0%';
+  updateUploadProgress(0, 'Waiting');
+
+  const steps = PROCESS_STEPS[curTool] || PROCESS_STEPS.default;
+  let pct = 0, si = 0;
+  
+  const timer = setInterval(() => {
+    pct += Math.random()*12+3;
+    if (pct > 90) pct = 90;
+    fill.style.width = pct+'%';
+    progText.textContent = steps[Math.min(si++, steps.length-1)];
+    progPct.textContent = Math.round(pct)+'%';
+  }, 300);
+
+  try {
+    const response = await sendToolRequest(curTool, (uploadPercent) => {
+      const rounded = Math.round(uploadPercent);
+      updateUploadProgress(rounded, 'Uploading');
+      pct = Math.max(pct, Math.min(60, uploadPercent * 0.6));
+      fill.style.width = pct + '%';
+      progText.textContent = `Uploading files ${rounded}%`;
+      progPct.textContent = Math.round(pct) + '%';
+    });
+    
+    clearInterval(timer);
+    updateUploadProgress(100, 'Uploaded');
+    fill.style.width = '100%';
+    progPct.textContent = '100%';
+    progText.textContent = 'Completed!';
+    
+    setTimeout(() => {
+      finishTool(fill, btn, spinner, btnIcon, prog, result, response);
+    }, 500);
+  } catch (error) {
+    clearInterval(timer);
+    uploadProgress = uploadProgress.map(progress => ({ ...progress, status: 'Failed' }));
+    renderFileList();
+    showToast('❌ Error: ' + error.message, 'error');
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnIcon.style.display = '';
+    prog.classList.remove('show');
+  }
+}
+
+async function sendToolRequest(toolId, onUploadProgress) {
+  const apiUrl = `${API_BASE_URL}/api/tools/${toolId}`;
+  const formData = new FormData();
+
+  // Add files
+  if (uploadedFiles.length > 0) {
+    if (TOOLS[toolId].multi) {
+      uploadedFiles.forEach(f => formData.append('files', f));
+    } else {
+      formData.append('file', uploadedFiles[0]);
+    }
+  }
+
+  // Add tool-specific parameters
+  const params = getToolParams(toolId);
+  Object.entries(params).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  // Use XMLHttpRequest for real upload progress tracking
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    
+    // Track upload progress
+    xhr.upload.addEventListener('progress', (e) => {
+      if (e.lengthComputable) {
+        const percentComplete = (e.loaded / e.total) * 100;
+        if (onUploadProgress) onUploadProgress(percentComplete);
+      }
+    });
+
+    xhr.upload.addEventListener('loadend', () => {
+      if (onUploadProgress && uploadedFiles.length > 0) onUploadProgress(100);
+    });
+    
+    xhr.addEventListener('load', () => {
+      if (xhr.status === 200) {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          resolve(response);
+        } catch (e) {
+          reject(new Error('Invalid response format'));
+        }
+      } else {
+        try {
+          const error = JSON.parse(xhr.responseText);
+          reject(new Error(error.error || 'Processing failed'));
+        } catch {
+          reject(new Error(`Server error: ${xhr.status}`));
+        }
+      }
+    });
+    
+    xhr.addEventListener('error', () => {
+      reject(new Error('Network error'));
+    });
+    
+    xhr.open('POST', apiUrl);
+    xhr.send(formData);
+  });
+}
+
+function getToolParams(toolId) {
+  const params = {};
+  const wsBody = document.getElementById('ws-body');
+  
+  if (!wsBody) return params;
+
+  const inputs = [...wsBody.querySelectorAll('input, textarea')];
+  const selects = [...wsBody.querySelectorAll('select')];
+  const ranges = inputs.filter(el => el.type === 'range');
+  const numbers = inputs.filter(el => el.type === 'number');
+  const textInputs = inputs.filter(el => ['text', 'url', 'password', 'search', ''].includes(el.type));
+  const activeToggles = [...wsBody.querySelectorAll('.toggle-group')].map(group => {
+    const active = group.querySelector('.tog-btn.on');
+    return active ? active.textContent.trim() : '';
+  });
+  const clean = (value) => String(value || '').trim();
+  const slug = (value) => clean(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const firstValue = (selector) => {
+    const el = wsBody.querySelector(selector);
+    return el ? clean(el.value) : '';
+  };
+
+  switch (toolId) {
+    case 'remove-pages':
+    case 'extract':
+      params.pages = clean(textInputs[0]?.value);
+      break;
+    case 'reorder':
+      params.order = clean(textInputs[0]?.value);
+      break;
+    case 'rotate': {
+      const angleText = clean(activeToggles[0]);
+      params.angle = angleText.includes('Left') ? -90 : (parseInt(angleText, 10) || 180);
+      const applyText = clean(selects[0]?.value).toLowerCase();
+      params.applyTo = applyText.includes('even') ? 'even' : (applyText.includes('odd') ? 'odd' : 'all');
+      break;
+    }
+    case 'compress':
+      params.level = slug(activeToggles[0] || 'recommended');
+      params.dpi = parseInt(ranges[0]?.value, 10) || 150;
+      break;
+    case 'html2pdf':
+      params.url = firstValue('input[type="url"]') || clean(textInputs[0]?.value);
+      break;
+    case 'watermark':
+      params.text = clean(textInputs[0]?.value) || 'CONFIDENTIAL';
+      params.fontSize = parseInt(ranges[0]?.value, 10) || 48;
+      params.opacity = parseInt(ranges[1]?.value, 10) || 30;
+      params.rotation = parseInt(ranges[2]?.value, 10) || -45;
+      break;
+    case 'pagenumbers':
+      params.position = slug(selects[0]?.value || 'bottom-center');
+      params.format = clean(selects[1]?.value);
+      params.startFrom = parseInt(numbers[0]?.value, 10) || 1;
+      break;
+    case 'crop':
+      params.top = parseInt(numbers[0]?.value, 10) || 0;
+      params.right = parseInt(numbers[1]?.value, 10) || 0;
+      params.bottom = parseInt(numbers[2]?.value, 10) || 0;
+      params.left = parseInt(numbers[3]?.value, 10) || 0;
+      break;
+    case 'metadata':
+      params.title = clean(textInputs[0]?.value);
+      params.author = clean(textInputs[1]?.value);
+      params.subject = clean(textInputs[2]?.value);
+      params.keywords = clean(textInputs[3]?.value);
+      break;
+    case 'protect':
+      params.password = firstValue('#protect-pwd') || clean(textInputs[0]?.value);
+      break;
+    case 'unlock':
+      params.password = clean(textInputs[0]?.value);
+      break;
+    case 'ai-translate':
+      params.from = clean(selects[0]?.value) || 'Auto-detect';
+      params.to = clean(selects[1]?.value) || 'Hindi';
+      break;
+    case 'ai-chat':
+      params.question = firstValue('#chat-input') || 'Summarize this PDF';
+      break;
+    case 'pwd-checker':
+      params.password = firstValue('#pwdcheck-input');
+      break;
+    case 'batch':
+      params.operation = slug(selects[0]?.value || 'compress').replace('-all', '');
+      break;
+  }
+
+  return params;
+}
+
+function finishTool(fill,btn,spinner,btnIcon,prog,result,apiResponse) {
+  fill.style.width = '100%';
+  setTimeout(()=>{
+    prog.classList.remove('show');
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    btnIcon.style.display = '';
+    const t = TOOLS[curTool];
+
+    if (uploadedFiles.length>0) addToRecent(uploadedFiles[0], curTool);
+
+    let statsHtml = `<div class="result-stats">`;
+    
+    // Add stats based on response
+    if (apiResponse.originalSize && apiResponse.compressedSize) {
+      statsHtml += `
+        <div class="rstat"><div class="rstat-num">${apiResponse.percentageSaved}%</div><div class="rstat-label">Size reduced</div></div>
+        <div class="rstat"><div class="rstat-num">${apiResponse.originalSize}KB</div><div class="rstat-label">Original</div></div>
+        <div class="rstat"><div class="rstat-num">${apiResponse.compressedSize}KB</div><div class="rstat-label">Compressed</div></div>
+      `;
+    }
+    
+    if (apiResponse.extractedCount) {
+      statsHtml += `<div class="rstat"><div class="rstat-num">${apiResponse.extractedCount}</div><div class="rstat-label">Pages extracted</div></div>`;
+    }
+    
+    if (apiResponse.pageCount) {
+      statsHtml += `<div class="rstat"><div class="rstat-num">${apiResponse.pageCount}</div><div class="rstat-label">Total pages</div></div>`;
+    }
+    
+    if (apiResponse.imageCount) {
+      statsHtml += `<div class="rstat"><div class="rstat-num">${apiResponse.imageCount}</div><div class="rstat-label">Images converted</div></div>`;
+    }
+
+    statsHtml += `</div>`;
+
+    // Handle AI summary
+    if (curTool==='ai-summarize' && apiResponse.summary) {
+      const sumEl = document.getElementById('ai-sum-result');
+      if (sumEl) { 
+        sumEl.textContent = apiResponse.summary; 
+        sumEl.classList.add('show'); 
+      }
+    }
+
+    result.classList.add('show');
+    
+    const outputFiles = apiResponse.filename ? [apiResponse.filename] : (Array.isArray(apiResponse.files) ? apiResponse.files : []);
+    const downloadBtn = outputFiles.length === 1
+      ? `<button class="btn-dl" onclick="downloadFile('${outputFiles[0]}')"><i class="fa-solid fa-download"></i> Download</button>`
+      : outputFiles.map((file, idx) => `<button class="btn-dl" onclick="downloadFile('${file}')"><i class="fa-solid fa-download"></i> File ${idx + 1}</button>`).join('');
+    const downloadAllBtn = apiResponse.zipFilename
+      ? `<button class="btn-dl" style="background:#111827" onclick="downloadFile('${apiResponse.zipFilename}')"><i class="fa-solid fa-file-zipper"></i> Download all</button>`
+      : '';
+    const downloadLink = outputFiles.length === 1
+      ? `<button class="btn-dl" style="background:#2563eb" onclick="copyDownloadLink('${outputFiles[0]}')"><i class="fa-solid fa-copy"></i> Copy link</button>`
+      : '';
+    
+    result.innerHTML = `
+      <div class="result-icon">✅</div>
+      <div class="result-title">${t.title} complete!</div>
+      <div class="result-desc">${apiResponse.message}</div>
+      ${statsHtml}
+      <div class="result-btns">
+        ${downloadAllBtn}
+        ${downloadBtn}
+        ${downloadLink}
+        <button class="btn-again" onclick="resetResult()"><i class="fa-solid fa-plus"></i> New task</button>
+      </div>`;
+    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    showToast('✅ '+t.title+' completed!', 'success');
+  }, 400);
+}
+
+function downloadFile(filename) {
+  const link = document.createElement('a');
+  link.href = `${API_BASE_URL}/api/download/${filename}`;
+  link.download = filename;
+  link.click();
+  showToast('📥 Downloading your file…', 'info');
+}
+
+function copyDownloadLink(filename) {
+  const link = `${API_BASE_URL}/api/download/${filename}`;
+  navigator.clipboard.writeText(link).then(() => {
+    showToast('✅ Link copied to clipboard', 'success');
+  });
+}
+function resetResult() {
+  uploadedFiles = [];
+  uploadProgress = [];
+  if (document.getElementById('file-list')) document.getElementById('file-list').innerHTML='';
+  document.getElementById('ws-result').classList.remove('show');
+  if (document.getElementById('ws-action-btn')) document.getElementById('ws-action-btn').disabled=true;
+}
+
+// ======================== SIGNATURE ========================
+function initSignCanvas() {
+  setTimeout(()=>{
+    const c = document.getElementById('sign-canvas');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    ctx.lineJoin='round'; ctx.lineCap='round'; ctx.lineWidth=2; ctx.strokeStyle='#1f2937';
+    const getPos = (e) => {
+      const r = c.getBoundingClientRect();
+      const src = e.touches?e.touches[0]:e;
+      return {x:src.clientX-r.left, y:src.clientY-r.top};
+    };
+    c.addEventListener('mousedown', e=>{isDrawing=true;const p=getPos(e);lastX=p.x;lastY=p.y});
+    c.addEventListener('mousemove', e=>{if(!isDrawing)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.stroke();lastX=p.x;lastY=p.y});
+    c.addEventListener('mouseup', ()=>isDrawing=false);
+    c.addEventListener('touchstart', e=>{e.preventDefault();isDrawing=true;const p=getPos(e);lastX=p.x;lastY=p.y},{passive:false});
+    c.addEventListener('touchmove', e=>{e.preventDefault();if(!isDrawing)return;const p=getPos(e);ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.stroke();lastX=p.x;lastY=p.y},{passive:false});
+    c.addEventListener('touchend', ()=>isDrawing=false);
+  }, 100);
+}
+function clearCanvas() { const c=document.getElementById('sign-canvas');if(c){c.getContext('2d').clearRect(0,0,c.width,c.height);} }
+function showSignTab(tab) {
+  ['draw','type','upload'].forEach(t=>{const el=document.getElementById('sign-'+t);if(el)el.style.display=t===tab?'':'none';});
+  if (tab==='draw') initSignCanvas();
+}
+
+// ======================== PASSWORD STRENGTH ========================
+function checkPwdStrength(pwd) {
+  let score=0;
+  if(pwd.length>=8)score++;
+  if(/[A-Z]/.test(pwd))score++;
+  if(/[0-9]/.test(pwd))score++;
+  if(/[^A-Za-z0-9]/.test(pwd))score++;
+  const labels=['Too weak','Weak','Good','Strong'];
+  const clsMap=['filled-1','filled-2','filled-3','filled-4'];
+  for(let i=1;i<=4;i++){
+    const bar=document.getElementById('pb'+i);
+    if(bar){bar.className='pwd-bar '+(i<=score?clsMap[score-1]:'');}
+  }
+  const lbl=document.getElementById('pwd-label');
+  if(lbl)lbl.textContent=pwd.length===0?'Enter a password':(labels[score-1]||'Too weak');
+}
+
+function liveCheckPwd(pwd) {
+  let score=0;
+  if(pwd.length>=8)score++;
+  if(pwd.length>=12)score++;
+  if(/[A-Z]/.test(pwd)&&/[a-z]/.test(pwd))score++;
+  if(/[0-9]/.test(pwd))score++;
+  if(/[^A-Za-z0-9]/.test(pwd))score++;
+  const s=Math.min(score,4);
+  const clsMap=['filled-1','filled-2','filled-3','filled-4'];
+  for(let i=1;i<=4;i++){
+    const bar=document.getElementById('pc'+i);
+    if(bar)bar.className='pwd-bar '+(i<=s?clsMap[s-1]:'');
+  }
+  const labels=['','Very Weak 🔴','Weak 🟠','Moderate 🟡','Strong 🟢'];
+  const lbl=document.getElementById('pwdcheck-label');
+  if(lbl)lbl.textContent=pwd.length===0?'Enter a password to check':(labels[s]||'Too weak');
+  const tips=document.getElementById('pwdcheck-tips');
+  if(!tips)return;
+  if(pwd.length===0){tips.style.display='none';return;}
+  tips.style.display='block';
+  let t='Tips to improve:\n';
+  if(pwd.length<8)t+='• Use at least 8 characters\n';
+  if(!/[A-Z]/.test(pwd))t+='• Add uppercase letters\n';
+  if(!/[0-9]/.test(pwd))t+='• Include numbers\n';
+  if(!/[^A-Za-z0-9]/.test(pwd))t+='• Add special characters (!@#$...)\n';
+  if(pwd.length>=12&&s>=3)t='✅ Great password! Keep it safe and don\'t reuse it.';
+  tips.textContent=t;
+}
+
+// ======================== PAGE NUMBERS PREVIEW ========================
+function updatePageNumPreview() {
+  const pos=document.getElementById('pn-pos');
+  const lbl=document.getElementById('pn-label');
+  if(!pos||!lbl)return;
+  const map={'Bottom Center':'bottom-center','Bottom Right':'bottom-right','Bottom Left':'bottom-left','Top Center':'top-center','Top Right':'top-right','Top Left':'top-left'};
+  lbl.className='pagenum-label '+(map[pos.value]||'bottom-center');
+}
+
+// ======================== RECENT FILES ========================
+function addToRecent(file, tool) {
+  recentFiles.unshift({name:file.name,size:formatSize(file.size),tool:TOOLS[tool]?.title||tool,time:'Just now'});
+  if(recentFiles.length>6)recentFiles=recentFiles.slice(0,6);
+  renderRecent();
+}
+function renderRecent() {
+  const sec=document.getElementById('recent-section');
+  const grid=document.getElementById('recent-grid');
+  if(!sec||!grid)return;
+  if(recentFiles.length===0){sec.style.display='none';return;}
+  sec.style.display='block';
+  grid.innerHTML=recentFiles.map(f=>`
+    <div class="recent-card">
+      <div class="recent-icon"><i class="fa-solid fa-file-pdf"></i></div>
+      <div class="recent-info">
+        <div class="recent-name">${f.name}</div>
+        <div class="recent-meta">${f.tool} · ${f.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ======================== CHAT ========================
+function sendChatMsg() {
+  const input=document.getElementById('chat-input');
+  const msgs=document.getElementById('chat-messages');
+  if(!input||!msgs||!input.value.trim())return;
+  const msg=input.value.trim();
+  input.value='';
+  msgs.innerHTML+=`<div style="background:var(--red);color:#fff;border-radius:10px 10px 2px 10px;padding:9px 13px;font-size:13px;align-self:flex-end;max-width:85%">${msg}</div>`;
+  setTimeout(()=>{
+    const replies=['Based on the document, the key finding is that process automation can save 23% in costs.','The document mentions this topic on pages 3-5, summarizing the main approach.','According to the PDF, the recommended timeline is 18 months for full implementation.','The author suggests three main solutions: automation, restructuring, and vendor consolidation.'];
+    msgs.innerHTML+=`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px 10px 10px 2px;padding:9px 13px;font-size:13px;align-self:flex-start;max-width:85%"><i class="fa-solid fa-robot" style="color:var(--purple);margin-right:6px"></i>${replies[Math.floor(Math.random()*replies.length)]}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },900);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ======================== TOAST ========================
+function showToast(msg, type='success') {
+  const c=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;
+  t.innerHTML=`<i class="fa-solid ${type==='success'?'fa-circle-check':type==='error'?'fa-circle-xmark':'fa-circle-info'}"></i>${msg}`;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(50px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),300)},3000);
+}
+
+// ======================== INIT ========================
+document.addEventListener('keydown', e=>{if(e.key==='Escape')closeWorkspaceFn();});
+// Welcome toast
+setTimeout(()=>showToast('👋 Welcome to PDFly Pro — 40+ tools, all free!','info'),1200);
+</script>
+</body>
+</html>
